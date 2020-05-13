@@ -1,0 +1,41 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
+
+    defaultConfig {
+        applicationId "com.admost.admostswipeablenativedemo"
+        minSdkVersion 16
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation 'com.android.volley:volley:1.1.0'
+    implementation 'com.admost.sdk:amr:2.1.0'  // Required top level gradle -> repositories-> maven { url 'http://repo.admost.com:8081/artifactory/test-before-publish' }
+    implementation 'com.admost.sdk:admost:0.0.8.a17'
+    implementation 'com.google.android.gms:play-services-base:16.1.0'
+
+    //optional
+    implementation 'com.google.android.gms:play-services-ads-identifier:16.0.0'
+
+}
