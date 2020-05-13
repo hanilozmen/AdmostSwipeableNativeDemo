@@ -100,4 +100,26 @@ public class MainActivity extends Activity {
         }, customBinder);
         nativeBanner.load();
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(nativeBanner != null)
+            nativeBanner.resume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(nativeBanner != null)
+            nativeBanner.pause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(nativeBanner !=null) {
+            nativeBanner.destroy();
+        }
+    }
 }
