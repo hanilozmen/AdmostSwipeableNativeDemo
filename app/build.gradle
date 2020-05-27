@@ -31,11 +31,11 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation 'com.android.volley:volley:1.1.0'
-    implementation 'com.admost.sdk:amr:2.1.0'  // Required top level gradle -> repositories-> maven { url 'http://repo.admost.com:8081/artifactory/test-before-publish' }
-    implementation 'com.admost.sdk:admost:0.0.8.a17'
+    implementation 'com.admost.sdk:amr:2.1.2'
+    implementation 'com.admost.sdk:admost:0.1.0.a17'
     implementation 'com.google.android.gms:play-services-base:16.1.0'
 
-    //optional
-    implementation 'com.google.android.gms:play-services-ads-identifier:16.0.0'
+    implementation 'com.google.android.gms:play-services-ads-identifier:17.0.0'
+
 
 }

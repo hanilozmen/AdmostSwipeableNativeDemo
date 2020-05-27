@@ -6,25 +6,24 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import admost.adserver.ads.AdMostNativeAdView;
-import admost.sdk.AdMostView;
+import admost.sdk.AdMostCustomView;
 import admost.sdk.AdMostViewBinder;
 import admost.sdk.base.AdMost;
 import admost.sdk.base.AdMostConfiguration;
+import admost.sdk.listener.AdMostCustomViewListener;
 import admost.sdk.listener.AdMostInitListener;
-import admost.sdk.listener.AdMostViewListener;
 
 public class MainActivity extends Activity {
 
-    AdMostView nativeBanner;
+    AdMostCustomView nativeBanner;
 
 
     public static final String TAG = "ADMOST_SAMPLE_APP";
 
     public static final String ADMOST_APP_ID = "6cc8e89a-b52a-4e9a-bb8c-579f7ec538fe";
     final static String NATIVE_SWIPEABLE_ZONE_ID = "9e5d4b82-aa93-43a1-9fd5-3c71691fbcc7";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,46 +55,38 @@ public class MainActivity extends Activity {
                 .mainImageId(R.id.ad_image)
                 .backImageId(R.id.ad_back)
                 .privacyIconId(R.id.ad_privacy_icon)
-                .preventClicks(true) // new feature. only privacy icon is clickable.
                 .isRoundedMode(true)
+                .preventClicks(true) // TODO Note: if you want to be a clickable ad  change it to false.
                 .build();
 
         ((LinearLayout) findViewById(R.id.adLayout)).removeAllViews();
         if (nativeBanner != null) {
             nativeBanner.destroy();
         }
-        nativeBanner = new AdMostView(MainActivity.this, NATIVE_SWIPEABLE_ZONE_ID, new AdMostViewListener() {
 
+        nativeBanner = new AdMostCustomView(MainActivity.this, NATIVE_SWIPEABLE_ZONE_ID, new AdMostCustomViewListener() {
             @Override
-            public void onReady(String network, int ecpm, View adView) {
-                Log.d(TAG, "MainActivity native onReady network: " + network + " ecpm: " + ecpm);
-                LinearLayout viewAd = (LinearLayout) findViewById(R.id.adLayout);
-                viewAd.removeAllViews();
-                if (adView.getParent() != null && adView.getParent() instanceof ViewGroup) {
-                    ((ViewGroup) adView.getParent()).removeAllViews();
+            public void onReady(AdMostCustomView.Data data, View view) {
+                Log.d(TAG, String.format("onReady: %s", data.toString()));
+                LinearLayout adLayout = (LinearLayout) findViewById(R.id.adLayout);
+                adLayout.removeAllViews();
+                if (view.getParent() != null && view.getParent() instanceof ViewGroup) {
+                    ((ViewGroup) view.getParent()).removeAllViews();
                 }
-                viewAd.addView(adView);
+                adLayout.addView(view);
 
-                View admostNativeAd = adView.findViewWithTag(AdMostNativeAdView.TAG);
-
-                 // TODO The publisher need to detect swipe and call the method below
-
-                /*if(admostNativeAd instanceof AdMostNativeAdView) {
-                    ((AdMostNativeAdView)admostNativeAd).getNativeAd().goToContentUrl();
-                }*/
-
+                //TODO by Integrating Partner -> Detection of Swipe and calling the method below
+                // nativeBanner.goToAdUrl();
             }
 
             @Override
-            public void onFail(int errorCode) {
-                Log.d(TAG,"native error Code :" + errorCode);
-
+            public void onFail(int i, String s) {
+                Log.d(TAG, String.format("onFail: Error code-> %d , error message-> %s ", i, s));
             }
 
             @Override
-            public void onClick(String network) {
-                Log.d(TAG, "onClick : native" );
-
+            public void onClick(AdMostCustomView.Data data) {
+                Log.d(TAG, String.format("onClick: %s", data.toString()));
             }
         }, customBinder);
         nativeBanner.load();
@@ -104,21 +95,21 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        if(nativeBanner != null)
+        if (nativeBanner != null)
             nativeBanner.resume();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if(nativeBanner != null)
+        if (nativeBanner != null)
             nativeBanner.pause();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(nativeBanner !=null) {
+        if (nativeBanner != null) {
             nativeBanner.destroy();
         }
     }

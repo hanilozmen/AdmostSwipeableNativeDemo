@@ -20,7 +20,10 @@ allprojects {
     repositories {
         google()
         jcenter()
-        maven { url 'http://repo.admost.com:8081/artifactory/test-before-publish' }
+        maven { url 'http://repo.admost.com:8081/artifactory/admost' }
+        flatDir {
+            dirs 'libs'
+        }
         
     }
 }
