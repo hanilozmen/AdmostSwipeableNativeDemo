@@ -27,16 +27,6 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        StorylyView storylyView = findViewById(R.id.storyly_view);
-        storylyView.setStorylyInit(new StorylyInit("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhY2NfaWQiOjU1NiwiYXBwX2lkIjozMTksImluc19pZCI6MzE5fQ.AMVZQxwyXO0mSWFhuxOsNAv8kOXZnSvniyKHV2-izFk"));
-        // StorylyExternalProvider listener will handle upcoming request flow for ads
-        storylyView.setStorylyExternalViewProvider(new StorylyExternalViewProvider() {
-            @Override
-            public void onRequest(@NonNull StorylyExternalViewListener storylyExternalViewListener) {
-                createStorylyAdView(storylyExternalViewListener);
-            }
-        });
-
         AdMostConfiguration.Builder configuration = new AdMostConfiguration.Builder(this, ADMOST_APP_ID);
         AdMost.getInstance().init(configuration.build(), new AdMostInitListener() {
             @Override
@@ -49,6 +39,18 @@ public class MainActivity extends Activity {
                 Log.i(TAG, "AdMost onInitFailed: status code " + i);
             }
         });
+
+        StorylyView storylyView = findViewById(R.id.storyly_view);
+        storylyView.setStorylyInit(new StorylyInit("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhY2NfaWQiOjU1NiwiYXBwX2lkIjozMTksImluc19pZCI6MzE5fQ.AMVZQxwyXO0mSWFhuxOsNAv8kOXZnSvniyKHV2-izFk"));
+        // StorylyExternalProvider listener will handle upcoming request flow for ads
+        storylyView.setStorylyExternalViewProvider(new StorylyExternalViewProvider() {
+            @Override
+            public void onRequest(@NonNull StorylyExternalViewListener storylyExternalViewListener) {
+                createStorylyAdView(storylyExternalViewListener);
+            }
+        });
+
+
     }
 
     private void createStorylyAdView(@NonNull StorylyExternalViewListener storylyExternalViewListener) {
