@@ -54,8 +54,12 @@ public class MainActivity extends Activity {
     }
 
     private void createStorylyAdView(@NonNull StorylyExternalViewListener storylyExternalViewListener) {
-        storylyAdView = new StorylyAdView(this);
-        storylyAdView.storylyExternalViewListener = storylyExternalViewListener;
+        if(storylyAdView == null) {
+            storylyAdView = new StorylyAdView(this, storylyExternalViewListener);
+        }else {
+            storylyAdView.storylyExternalViewListener = storylyExternalViewListener;
+            storylyAdView.refreshAd();
+        }
     }
 
     @Override

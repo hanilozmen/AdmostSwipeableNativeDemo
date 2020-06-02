@@ -5,6 +5,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
@@ -23,25 +24,37 @@ public class StorylyAdView extends StorylyExternalView {
     public StorylyExternalViewListener storylyExternalViewListener;
 
     private AdMostCustomView nativeBanner;
+    private View adView;
 
-    public StorylyAdView(Context context, AttributeSet attributeSet, int i) {
+    private StorylyAdView(Context context, AttributeSet attributeSet, int i) {
         super(context, attributeSet, i);
-        setupView();
+        refreshAd();
     }
 
-    public StorylyAdView(Context context, AttributeSet attributeSet) {
+    private StorylyAdView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
-        setupView();
+        refreshAd();
     }
 
-    public StorylyAdView(Context context) {
+    private StorylyAdView(Context context) {
         super(context);
-        setupView();
+        refreshAd();
     }
 
-    private void setupView() {
+    public StorylyAdView(Context context, StorylyExternalViewListener listener) {
+        super(context);
+        storylyExternalViewListener= listener;
+        refreshAd();
+    }
+
+
+    public void refreshAd() {
         // This is just for your own style, left null if you want default layout style
-        final AdMostViewBinder customBinder = new AdMostViewBinder.Builder(R.layout.admost_native_fullscreen_swipeable)
+        if(nativeBanner != null && nativeBanner.isAdLoaded() && storylyExternalViewListener != null) {
+            storylyExternalViewListener.onLoad(StorylyAdView.this);
+            return;
+        }
+        final AdMostViewBinder customBinder = new AdMostViewBinder.Builder(R.layout.custom_native_design)
                 .iconImageId(R.id.ad_app_icon)
                 .titleId(R.id.ad_headline)
                 .callToActionId(R.id.ad_call_to_action)
@@ -57,9 +70,12 @@ public class StorylyAdView extends StorylyExternalView {
         nativeBanner = new AdMostCustomView((Activity) getContext(), NATIVE_SWIPEABLE_ZONE_ID, new AdMostCustomViewListener() {
             @Override
             public void onReady(AdMostCustomView.Data data, View view) {
+                adView =  view;
                 Log.d(TAG, String.format("onReady: %s", data.toString()));
                 // StorylyExternalViewListener handles load callback for ads, this handles async load flows
-                storylyExternalViewListener.onLoad(StorylyAdView.this);
+                if(storylyExternalViewListener !=null){
+                    storylyExternalViewListener.onLoad(StorylyAdView.this);
+                }
             }
 
             @Override
@@ -87,7 +103,11 @@ public class StorylyAdView extends StorylyExternalView {
     public @NonNull String getTitle() {
         // NOTES: We've added getTitle function, waits the title for ad. Is it possible you to provide it?
         Log.d(TAG, "getTitle");
-        return "Admost Ad";
+        View headlineView = adView.findViewById(R.id.ad_headline);
+       if(headlineView instanceof TextView) {
+           return "Advertising: " + ((TextView)headlineView).getText();
+       }
+        return "Advertising";
     }
 
     @Override
