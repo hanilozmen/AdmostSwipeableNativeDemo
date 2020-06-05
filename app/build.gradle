@@ -6,12 +6,12 @@ android {
 
     defaultConfig {
         applicationId "com.admost.admostswipeablenativedemo"
-        minSdkVersion 17
+        minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -35,8 +35,13 @@ dependencies {
     implementation 'com.admost.sdk:admost:0.1.1.a18'
     implementation 'com.google.android.gms:play-services-base:16.1.0'
 
-    implementation 'com.google.android.gms:play-services-ads-identifier:17.0.0'
+    implementation 'com.google.android.gms:play-services-ads:17.2.1'
 
-    implementation 'com.appsamurai.storyly:storyly:1.4.0-rc1'
-    implementation 'com.admost.sdk:storyly-adapter:1.4.0-rc'
+    implementation 'com.appsamurai.storyly:storyly:1.4.1-rc1'
+    implementation 'com.admost.sdk:storyly-adapter:1.4.0-v4'
+
+    implementation 'com.admost.sdk:facebook:5.8.0.a18'
+    implementation 'com.android.support:recyclerview-v7:28.0.0'
+    implementation 'com.admost.sdk:mintegral:10.2.1.a18'
+    implementation 'com.mintegral.msdk:mtgbid:10.2.11'
 }

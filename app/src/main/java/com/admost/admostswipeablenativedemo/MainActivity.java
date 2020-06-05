@@ -3,9 +3,13 @@ package com.admost.admostswipeablenativedemo;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
+
 import com.amr.plugin.storyly.AdMostStorylyViewProvider;
 import com.appsamurai.storyly.StorylyInit;
+import com.appsamurai.storyly.StorylySegmentation;
 import com.appsamurai.storyly.StorylyView;
+
+import java.util.HashSet;
 
 import admost.sdk.base.AdMost;
 import admost.sdk.base.AdMostConfiguration;
@@ -15,15 +19,20 @@ public class MainActivity extends Activity {
 
     public static final String TAG = "ADMOST_SAMPLE_APP";
 
-    public static final String ADMOST_APP_ID = "6cc8e89a-b52a-4e9a-bb8c-579f7ec538fe";
-    public static final String NATIVE_ZONE_ID = "9e5d4b82-aa93-43a1-9fd5-3c71691fbcc7";
+    public static final String ADMOST_APP_ID = "caa3dd5e-1617-ac3a-3d00-56adcaaddd6e";
+    public static final String NATIVE_ZONE_ID = "6a57e087-bf57-4b7e-8905-bf8d334235b3";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        test();
+    }
 
+
+
+    public void test() {
         AdMostConfiguration.Builder configuration = new AdMostConfiguration.Builder(this, ADMOST_APP_ID);
         AdMost.getInstance().init(configuration.build(), new AdMostInitListener() {
             @Override
@@ -37,8 +46,10 @@ public class MainActivity extends Activity {
             }
         });
 
+        HashSet<String> segment = new HashSet<String>();
+        segment.add("main_page");
         StorylyView storylyView = findViewById(R.id.storyly_view);
-        storylyView.setStorylyInit(new StorylyInit("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhY2NfaWQiOjU1NiwiYXBwX2lkIjozMTksImluc19pZCI6MzE5fQ.AMVZQxwyXO0mSWFhuxOsNAv8kOXZnSvniyKHV2-izFk"));
+        storylyView.setStorylyInit(new StorylyInit("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhY2NfaWQiOjk1NSwiYXBwX2lkIjo1NzgsImluc19pZCI6NTY2fQ.IDo71M-GZ-EPGvbHwkw44EKaNDuFHxTD7Tsq7Z6JoAs",new StorylySegmentation(segment)));
         // StorylyExternalProvider listener will handle upcoming request flow for ads
         storylyView.setStorylyExternalViewProvider(new AdMostStorylyViewProvider(this,NATIVE_ZONE_ID ));
     }
