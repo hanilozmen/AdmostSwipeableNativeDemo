@@ -20,7 +20,7 @@ public class MainActivity extends Activity {
     public static final String TAG = "ADMOST_SAMPLE_APP";
 
     public static final String ADMOST_APP_ID = "caa3dd5e-1617-ac3a-3d00-56adcaaddd6e";
-    public static final String NATIVE_ZONE_ID = "6a57e087-bf57-4b7e-8905-bf8d334235b3";
+    public static final String NATIVE_ZONE_ID = "cbe97e50-3366-4e91-aba2-6658b36e639c";
 
 
     @Override
